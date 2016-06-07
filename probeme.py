@@ -8,6 +8,7 @@ import subprocess
 import os
 import os.path
 import argparse
+import operator
 
 
 
@@ -17,8 +18,13 @@ def signal_handler(signal, frame):
     switchThread.join()
     formatString = "{0: <18} {1: <20} {2: <18}"
     print formatString.format("mac", "ssid", "last seen")
-    for key, value in entries.iteritems():
-        print formatString.format(value.mac, value.ssid, time.strftime("%Y%m%d-%H:%M:%S", value.timeLastSeen))
+    last_mac = ''
+    # group by mac address
+    for entry in sorted(entries.values(), key= operator.attrgetter('mac')):
+        if last_mac != entry.mac:
+            print '-----------'
+        print formatString.format(entry.mac, entry.ssid, time.strftime("%Y%m%d-%H:%M:%S", entry.timeLastSeen))
+        last_mac = entry.mac
     sys.exit(0)
 
 
