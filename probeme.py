@@ -13,18 +13,31 @@ import operator
 
 
 def signal_handler(signal, frame):
-    print 'You pressend CTRL+C, data is flushed into database/file...'
+    filename = "probeme_" + time.strftime("%Y%m%d-%H%M%S") + ".txt"
+    print 'You pressend CTRL+C, data is flushed into database/file ' + filename
     switchThread.running = False
     switchThread.join()
     formatString = "{0: <18} {1: <20} {2: <18}"
-    print formatString.format("mac", "ssid", "last seen")
+
+    file = open(filename, 'w')
+
+    output = formatString.format("mac", "ssid", "last seen") + '\n'
+
     last_mac = ''
     # group by mac address
     for entry in sorted(entries.values(), key= operator.attrgetter('mac')):
         if last_mac != entry.mac:
-            print '-----------'
-        print formatString.format(entry.mac, entry.ssid, time.strftime("%Y%m%d-%H:%M:%S", entry.timeLastSeen))
+            output = output + '-----------\n'
+        output = output + formatString.format(entry.mac, entry.ssid, time.strftime("%Y%m%d-%H:%M:%S", entry.timeLastSeen)) + '\n'
         last_mac = entry.mac
+
+    # print to stdout and into file
+    print output
+    file.write(output)
+
+    print 'Data was also written to file ' + filename
+
+    file.close()
     sys.exit(0)
 
 
@@ -40,7 +53,7 @@ class switchChannelThread (threading.Thread):
         self.delayInSeconds = delayInSeconds
         self.running = True
     def run(self):
-        print 'Starting switch channel thread using a dely of %d seconds' % self.delayInSeconds
+        print 'Starting switch channel thread using a dely of %d seconds\n' % self.delayInSeconds
         while self.running:
             for channel in range (1, self.maxChannel + 1):
                 if verbose: 
