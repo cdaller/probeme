@@ -142,7 +142,7 @@ print 'press CTRL+C to exit'
 # signal.pause()
 
 # start tshark and read the results
-displayFilter = "wlan.fcs_good==1 and not wlan_mgt.ssid==\\\"\\\"";
+displayFilter = "not wlan_mgt.ssid==\\\"\\\"";
 fieldParams = "-T fields -e wlan.sa -e wlan_mgt.ssid -Eseparator=,";
 tsharkCommandLine = "{0} -i {1} -n -l {2}"
 
