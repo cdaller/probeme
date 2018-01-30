@@ -142,8 +142,9 @@ print 'press CTRL+C to exit'
 # signal.pause()
 
 # start tshark and read the results
-displayFilter = "not wlan_mgt.ssid==\\\"\\\"";
-fieldParams = "-T fields -e wlan.sa -e wlan_mgt.ssid -Eseparator=,";
+# tshark 2.2 uses wlan_mgt.ssid, 2.4 uses wlan.ssid!
+displayFilter = "not wlan.ssid==\\\"\\\"";
+fieldParams = "-T fields -e wlan.sa -e wlan.ssid -Eseparator=,";
 tsharkCommandLine = "{0} -i {1} -n -l {2}"
 
 if (osname != 'Darwin'):
