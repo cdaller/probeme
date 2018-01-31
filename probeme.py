@@ -143,14 +143,14 @@ print 'press CTRL+C to exit'
 
 # start tshark and read the results
 # tshark 2.2 uses wlan_mgt.ssid, 2.4 uses wlan.ssid!
-displayFilter = "not wlan.ssid==\\\"\\\"";
-fieldParams = "-T fields -e wlan.sa -e wlan.ssid -Eseparator=,";
-tsharkCommandLine = "{0} -i {1} -n -l {2}"
+displayFilter = 'not wlan.ssid==""';
+fieldParams = '-T fields -e wlan.sa -e wlan.ssid -Eseparator=,';
+tsharkCommandLine = '{0} -i {1} -n -l {2}'
 
 if (osname != 'Darwin'):
-    tsharkCommandLine += " subtype probereq -2 -R \"{3}\""
+    tsharkCommandLine += ' subtype probereq -2 -R "{3}"'
 else:
-	tsharkCommandLine += " -y PPI -Y \"wlan.fc.type_subtype==4 and {3}\""
+	tsharkCommandLine += ' -y PPI -Y \'wlan.fc.type_subtype==4 and {3}\''
 #   tshark < 1.15: tsharkCommandLine += " -y PPI -2 -R \"wlan.fc.type_subtype==4 and {3}\""
 
 tsharkCommandLine = tsharkCommandLine.format(tsharkPath, interface, fieldParams, displayFilter)
