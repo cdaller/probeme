@@ -107,14 +107,14 @@ verbose = args.verbose
 airportPath = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport";
 
 # check all params
-if not os.path.isfile(tsharkPath):
+if not os.path.isfile(tsharkPath) and not os.path.islink(tsharkPath):
     print "tshark not found at path {0}".format(tsharkPath)
     sys.exit(1)
-if not os.path.isfile(ifconfigPath):
+if not os.path.isfile(ifconfigPath) and not os.path.islink(ifconfigPath):
     print "ifconfig not found at path {0}".format(ifconfigPath)
     sys.exit(1)
 if osname != "Darwin":
-    if not os.path.isfile(iwconfigPath):
+    if not os.path.isfile(iwconfigPath) and not os.path.islink(iwconfigPath):
         print "iwconfig not found at path {0}".format(iwconfigPath)
         sys.exit(1)
 
